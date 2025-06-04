@@ -5,10 +5,10 @@ import (
 	"path"
 )
 
-func GetTemplateFilePaths(templateDir string) ([]string, error) {
+func GetTemplateFilePaths(templateName string) ([]string, error) {
 	results := []string{}
 
-	tDirPath := path.Join("/typ", templateDir)
+	tDirPath := path.Join(GetTxpDir(), "/templates", templateName)
 
 	if dirInfo, err := os.ReadDir(tDirPath); err != nil {
 		return nil, err
