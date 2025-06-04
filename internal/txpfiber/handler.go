@@ -2,9 +2,11 @@ package txpfiber
 
 import (
 	"path"
+	"strings"
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
+	"github.com/unhanded/txp/internal/dataman"
 	"github.com/unhanded/txp/internal/fs"
 )
 
@@ -33,14 +35,20 @@ func HandleCompile(c *fiber.Ctx) error {
 		return c.SendStatus(500)
 	}
 
-	SendPdf(c, b)
+	log.Info("Sucessfully generated a document, proceeding to send", "work_id", strings.TrimPrefix(wd, "."))
+	if err := SendPdf(c, b); err != nil {
+		log.Error("Failed to send response", "err", err)
+	}
+	fs.UnbotheredDelete(wd)
 
 	return nil
 }
 
 func prepCompile(templateName string) (string, error) {
 	wd := NewWorkdir()
-	err := fs.CopyAll(path.Join("/typ", templateName), path.Join("./", wd))
+	templatePath := dataman.GetTemplatePath(templateName)
+
+	err := fs.CopyAll(templatePath, path.Join("./", wd))
 	if err != nil {
 		log.Error("Failed to copy files", "err", err)
 		return "", err

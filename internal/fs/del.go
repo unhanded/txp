@@ -1,7 +1,13 @@
 package fs
 
-import "os"
+import (
+	"os"
+
+	"github.com/charmbracelet/log"
+)
 
 func UnbotheredDelete(fp string) {
-	os.Remove(fp)
+	if err := os.RemoveAll(fp); err != nil {
+		log.Warn("Delete failed", "err", err)
+	}
 }

@@ -23,3 +23,8 @@ func GetTemplateFilePaths(templateName string) ([]string, error) {
 	}
 	return results, nil
 }
+
+func GetTemplatePath(templateName string) string {
+	return path.Join(GetTxpDir(), "/templates", templateName)
+
+}
