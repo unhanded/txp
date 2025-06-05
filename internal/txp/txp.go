@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"path"
 	"strings"
+
+	"github.com/unhanded/txp/internal/dataman"
 )
 
 func New() (*TXP, error) {
-	client := TXP{fontPaths: []string{"/fonts", "/usr/fonts"}}
+	client := TXP{fontPaths: []string{path.Join(dataman.GetTxpDir(), "/fonts"), "/usr/fonts"}}
 	if err := client.check(); err != nil {
 		return nil, err
 	}
