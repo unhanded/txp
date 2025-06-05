@@ -12,8 +12,12 @@ import (
 func placeUserData(c *fiber.Ctx, targetDir string) error {
 	b := c.Body()
 	if len(b) == 0 {
-		log.Debug("No user data")
-		return nil
+		if c.Method() == "GET" && os.Getenv("TXP_NOBODY") != "" {
+			b = []byte("{}")
+		} else {
+			log.Debug("No user data")
+			return nil
+		}
 	}
 	f, createErr := os.Create(path.Join(targetDir, "data.json"))
 	if createErr != nil {

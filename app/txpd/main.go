@@ -13,7 +13,15 @@ func main() {
 	app := fiber.New(fiber.Config{DisableStartupMessage: true})
 	app.Use(limiter.New(limiter.Config{Max: 6, Expiration: time.Second * 30}))
 
-	app.Post("/v1/templates/:templateName", txpfiber.HandleCompile)
+	app.All("/templates/:templateName",
+		func(c *fiber.Ctx) error {
+			mth := c.Method()
+			if mth == "POST" || mth == "GET" {
+				return txpfiber.HandleCompile(c)
+			}
+			return c.Next()
+		},
+	)
 
 	addr := ":" + os.Getenv("PORT")
 	app.Listen(addr)
