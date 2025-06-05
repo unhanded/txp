@@ -11,6 +11,7 @@ import (
 	"github.com/unhanded/txp/internal/fs"
 )
 
+// TODO: Get handlers running to accept GET requests if it's static etc
 type TxpConf struct {
 	Static bool `json:"static" yaml:"static"`
 }
