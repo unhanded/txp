@@ -14,4 +14,4 @@ ENV TXP_DIR=/txp_data
 
 VOLUME [ "/txp_data" ]
 
-#ENTRYPOINT [ "txpd" ]
+ENTRYPOINT [ "/bin/sh" ]
