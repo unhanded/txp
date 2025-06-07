@@ -27,7 +27,7 @@ func validate(dirpath string, isDebug bool) {
 		log.SetLevel(log.InfoLevel)
 	}
 
-	pack, err := txppack.Load(dirpath)
+	pack, err := txppack.New(dirpath)
 	if err != nil {
 		log.Fatal("Failed to load", "err", err)
 	}
