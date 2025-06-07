@@ -1,4 +1,4 @@
-package txp
+package txpc
 
 import (
 	"testing"
