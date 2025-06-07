@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
-	"github.com/unhanded/txp/internal/txp"
+	"github.com/unhanded/txp/internal/txpc"
 )
 
 func compileWithDir(dirName string, format string) ([]byte, error) {
@@ -15,7 +15,7 @@ func compileWithDir(dirName string, format string) ([]byte, error) {
 	if tfcErr != nil {
 		return nil, tfcErr
 	}
-	tx, txErr := txp.New()
+	tx, txErr := txpc.New()
 	if txErr != nil {
 		return nil, txErr
 	}
