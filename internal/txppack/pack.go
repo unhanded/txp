@@ -10,15 +10,17 @@ import (
 	"github.com/unhanded/txp/internal/dataman"
 )
 
+var alwaysRequiredFiles = []string{"main.typ"}
+
 type TxpPack struct {
+	DirPath  string
 	Name     string
 	FileList []string
+	Info     *TxpFileInfo
 }
 
-func (tp TxpPack) Validate() error {
+func (tp *TxpPack) Validate() error {
 	log.Info("Got file list", "itemCount", len(tp.FileList))
-	alwaysRequiredFiles := []string{"main.typ"}
-	warnMissingFiles := []string{"txpfile.yml"}
 	for _, req := range alwaysRequiredFiles {
 		if !slices.ContainsFunc(
 			tp.FileList,
@@ -29,14 +31,19 @@ func (tp TxpPack) Validate() error {
 		}
 	}
 
-	for _, file := range warnMissingFiles {
-		if !slices.ContainsFunc(
-			tp.FileList,
-			func(e string) bool {
-				return path.Base(e) == file
-			}) {
-			log.Warn("Missing expected file", "filename", file)
+	if slices.ContainsFunc(
+		tp.FileList,
+		func(e string) bool {
+			return path.Base(e) == "txpfile.yml"
+		}) {
+		tfi := TxpFileInfo{}
+		if err := tfi.FromFile(path.Join(tp.DirPath, "txpfile.yml")); err != nil {
+			log.Error("Failed to load txp file info", "err", err)
+		} else {
+			tp.Info = &tfi
 		}
+	} else {
+		log.Warn("Missing txpfile")
 	}
 
 	return nil
@@ -52,7 +59,7 @@ func New(templateName string) (*TxpPack, error) {
 	}
 
 	fileList := unpackDirs([]string{}, tPath)
-	return &TxpPack{Name: templateName, FileList: fileList}, nil
+	return &TxpPack{Name: templateName, DirPath: tPath, FileList: fileList}, nil
 }
 
 func unpackDirs(list []string, parentPath string) []string {

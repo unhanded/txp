@@ -12,7 +12,7 @@ import (
 func placeUserData(c *fiber.Ctx, targetDir string) error {
 	b := c.Body()
 	if len(b) == 0 {
-		if c.Method() == "GET" && os.Getenv("TXP_NOBODY") != "" {
+		if c.Method() == "GET" {
 			b = []byte("{}")
 		} else {
 			log.Debug("No user data")

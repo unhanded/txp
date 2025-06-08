@@ -1,0 +1,15 @@
+name: txp
+services:
+  txpd:
+    image: ghcr.io/unhanded/txp:dev
+    environment:
+      - PORT=8787
+      - TXP_TOKEN=super_secret
+      - TXP_DEBUG=1
+      #- TXP_DIR=value
+      #- TXP_WORKDIR=value
+    entrypoint: txpd
+    volumes:
+      - ./docs/example:/txp_data:ro
+    ports:
+      - 8787:8787

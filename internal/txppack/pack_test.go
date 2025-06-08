@@ -7,8 +7,6 @@ import (
 )
 
 func TestPackNew(t *testing.T) {
-	//log.SetLevel(log.DebugLevel)
-
 	if wd, err := os.Getwd(); err != nil {
 		t.Fatal(err)
 	} else {
