@@ -13,5 +13,6 @@ COPY --from=builder /app/dist/txpd /usr/bin/txpd
 ENV TXP_DIR=/txp_data
 
 VOLUME [ "/txp_data" ]
+VOLUME [ "/fonts" ]
 
 ENTRYPOINT [ "/bin/sh" ]
