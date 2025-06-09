@@ -7,11 +7,11 @@ import (
 	"path"
 	"strings"
 
-	"github.com/unhanded/txp/internal/dataman"
+	"github.com/unhanded/txp/internal/environ"
 )
 
 func New() (*TXP, error) {
-	client := TXP{fontPaths: []string{path.Join(dataman.GetTxpDir(), "/fonts"), "/usr/fonts"}}
+	client := TXP{fontPaths: []string{path.Join(environ.TxpDir(), "/fonts"), "/usr/fonts"}}
 	if err := client.check(); err != nil {
 		return nil, err
 	}

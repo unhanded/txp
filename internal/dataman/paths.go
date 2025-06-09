@@ -3,12 +3,14 @@ package dataman
 import (
 	"os"
 	"path"
+
+	"github.com/unhanded/txp/internal/environ"
 )
 
 func GetTemplateFilePaths(templateName string) ([]string, error) {
 	results := []string{}
 
-	tDirPath := path.Join(GetTxpDir(), "/templates", templateName)
+	tDirPath := GetTemplatePath(templateName)
 
 	if dirInfo, err := os.ReadDir(tDirPath); err != nil {
 		return nil, err
@@ -25,6 +27,6 @@ func GetTemplateFilePaths(templateName string) ([]string, error) {
 }
 
 func GetTemplatePath(templateName string) string {
-	return path.Join(GetTxpDir(), "/templates", templateName)
+	return path.Join(environ.TxpDir(), "/templates", templateName)
 
 }

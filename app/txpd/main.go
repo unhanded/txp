@@ -10,12 +10,16 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/unhanded/txp/internal/environ"
 	"github.com/unhanded/txp/internal/txpfiber"
+	"github.com/unhanded/txp/internal/txppack"
 )
 
 func main() {
 	if environ.TxpDebug() {
 		log.SetLevel(log.DebugLevel)
 	}
+
+	txppack.StartupCheck()
+
 	app := fiber.New(fiber.Config{DisableStartupMessage: true})
 	app.Use(limiter.New(limiter.Config{Max: 6, Expiration: time.Second * 30}))
 
