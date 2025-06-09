@@ -14,7 +14,7 @@ import (
 
 func HandleCompile(c *fiber.Ctx) error {
 	reqFormat := c.Query("format", "pdf")
-	if reqFormat != "pdf" && reqFormat != "png" {
+	if reqFormat != "pdf" && reqFormat != "png" && reqFormat != "svg" {
 		c.SendStatus(fiber.ErrNotImplemented.Code)
 	}
 	tName := c.Params("templateName", "")
