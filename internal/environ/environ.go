@@ -3,7 +3,11 @@ package environ
 import "os"
 
 func TxpDir() string {
-	return os.Getenv("TXP_DIR")
+	if v := os.Getenv("TXP_DIR"); v == "" {
+		return "./txp_data"
+	} else {
+		return v
+	}
 }
 
 func TxpWorkRoot() string {
