@@ -8,13 +8,17 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
+	"github.com/unhanded/txp/internal/cryptography"
 )
 
 func placeContext(c *fiber.Ctx, targetDir string) error {
+	b := c.Body()
+	sum := cryptography.CalculateChecksum(b)
 	ctx := map[string]any{
 		"fromIP":    c.IP(),
 		"timestamp": time.Now().Format("2006-01-02 15:04:05 UTC"),
 		"method":    c.Method(),
+		"sha224":    sum,
 	}
 
 	b, jsonErr := json.Marshal(ctx)
