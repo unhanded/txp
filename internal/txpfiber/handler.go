@@ -90,6 +90,7 @@ func renameIncludedDatafileToDefault(workDir string) error {
 
 	if !fs.FileExist(datafilePath) {
 		log.Debug("Quietly returning because of no data file present", "dir", workDir)
+		return nil
 	}
 
 	return fs.FileRename(datafilePath, "default.json")
