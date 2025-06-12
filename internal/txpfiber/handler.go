@@ -83,6 +83,11 @@ func populate(c *fiber.Ctx, workDir string) error {
 
 func renameIncludedDatafileToDefault(workDir string) error {
 	datafilePath := path.Join(workDir, "data.json")
+	if fs.FileExist(path.Join(workDir, "default.json")) {
+		log.Debug("Both default.json and data.json are present")
+		return nil
+	}
+
 	if !fs.FileExist(datafilePath) {
 		log.Debug("Quietly returning because of no data file present", "dir", workDir)
 	}
