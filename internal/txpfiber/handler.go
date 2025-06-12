@@ -66,6 +66,10 @@ func prepareForCompile(templateName string) (string, error) {
 		log.Error("Failed to copy files", "err", err)
 		return "", err
 	}
+	if err := renameIncludedDatafileToDefault(wd); err != nil {
+		log.Error("Failed to move stowaway data.json out of the way", "err", err)
+	}
+
 	return wd, nil
 }
 
@@ -75,4 +79,13 @@ func populate(c *fiber.Ctx, workDir string) error {
 	}
 
 	return placeContext(c, workDir)
+}
+
+func renameIncludedDatafileToDefault(workDir string) error {
+	datafilePath := path.Join(workDir, "data.json")
+	if !fs.FileExist(datafilePath) {
+		log.Debug("Quietly returning because of no data file present", "dir", workDir)
+	}
+
+	return fs.FileRename(datafilePath, "default.json")
 }
