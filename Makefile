@@ -4,7 +4,7 @@ build:
 
 .PHONY: dev
 dev:
-	PORT=8089 TXP_DIR=./example go run ./app/txpd
+	PORT=8089 TXP_DIR=./docs/example go run ./app/txpd
 
 dist/amd64:
 	GOARCH=amd64 go build -o ./dist/amd64/txpd ./app/txpd

@@ -7,6 +7,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/charmbracelet/log"
 	"github.com/unhanded/txp/internal/environ"
 )
 
@@ -60,12 +61,24 @@ func (t *TXP) Compile(data []byte, wd string, format string) ([]byte, error) {
 
 func run(cmd string, bytesIn []byte, args ...string) ([]byte, error) {
 	outBuf := bytes.NewBuffer([]byte{})
+	errBuf := bytes.NewBuffer([]byte{})
+
 	executor := exec.Command(cmd, args...)
+
 	executor.Stdout = outBuf
+	executor.Stderr = errBuf
+
 	if bytesIn != nil {
 		executor.Stdin = bytes.NewReader(bytesIn)
 	}
+
 	err := executor.Run()
+
+	if err != nil {
+		log.Error("Execution error")
+		b := errBuf.Bytes()
+		fmt.Printf("%s\n", string(b))
+	}
 
 	return outBuf.Bytes(), err
 }

@@ -38,5 +38,6 @@ func main() {
 	)
 
 	addr := ":" + os.Getenv("PORT")
+	log.Infof("Starting server on port %s", addr)
 	app.Listen(addr)
 }
