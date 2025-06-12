@@ -7,19 +7,30 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
+	"github.com/unhanded/txp/internal/fs"
 )
 
-func placeUserData(c *fiber.Ctx, targetDir string) error {
+var userDataFileName = "data.json"
+var defaultDataFileName = "default.json"
+
+func placeUserData(c *fiber.Ctx, workDir string) error {
 	b := c.Body()
 	if len(b) == 0 {
-		if c.Method() == "GET" {
-			b = []byte("{}")
+		log.Debug("No user data")
+		if hasDefaultFallback(workDir) {
+			log.Debug("Populating using default data")
+			if defaultErr := useDefaultFallback(workDir); defaultErr != nil { // Oh dear, couldn't use default
+				log.Error("Default data populate fail, falling back on zero-field data file", "err", defaultErr)
+				b = []byte("{}")
+			} else {
+				return nil
+			}
 		} else {
-			log.Debug("No user data")
 			return nil
 		}
 	}
-	f, createErr := os.Create(path.Join(targetDir, "data.json"))
+
+	f, createErr := os.Create(path.Join(workDir, userDataFileName))
 	if createErr != nil {
 		log.Error("failed to create file", "err", createErr.Error())
 		return createErr
@@ -32,4 +43,14 @@ func placeUserData(c *fiber.Ctx, targetDir string) error {
 		time.Sleep(time.Millisecond * 10)
 	}
 	return nil
+}
+
+func hasDefaultFallback(workDir string) bool {
+	defaultFilepath := path.Join(workDir, defaultDataFileName)
+	return fs.FileExist(defaultFilepath)
+}
+
+func useDefaultFallback(workDir string) error {
+	defaultFilepath := path.Join(workDir, defaultDataFileName)
+	return fs.FileRename(defaultFilepath, userDataFileName)
 }

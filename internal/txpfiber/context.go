@@ -11,7 +11,9 @@ import (
 	"github.com/unhanded/txp/internal/cryptography"
 )
 
-func placeContext(c *fiber.Ctx, targetDir string) error {
+// TODO: Typed TXP Context struct
+
+func placeContext(c *fiber.Ctx, workDir string) error {
 	b := c.Body()
 	sum := cryptography.CalculateChecksum(b)
 	ctx := map[string]any{
@@ -26,7 +28,7 @@ func placeContext(c *fiber.Ctx, targetDir string) error {
 		return jsonErr
 	}
 
-	f, createErr := os.Create(path.Join(targetDir, "context.json"))
+	f, createErr := os.Create(path.Join(workDir, "context.json"))
 	if createErr != nil {
 		log.Error("failed to create file", "err", createErr.Error())
 		return createErr
