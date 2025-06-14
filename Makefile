@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	docker build --platform linux/amd64 -t ghcr.io/unhanded/txp:dev .
+	docker build --platform linux/$(ARCH) -t ghcr.io/unhanded/txp:latest .
 
 .PHONY: dev
 dev:
