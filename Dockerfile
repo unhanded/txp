@@ -1,6 +1,6 @@
 ARG platform='amd64'
 
-FROM golang:1.24.3-bookworm AS builder
+FROM golang:1.24.3-alpine3.22 AS builder
 
 WORKDIR /app
 
