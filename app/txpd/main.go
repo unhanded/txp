@@ -23,11 +23,11 @@ func main() {
 	app := fiber.New(fiber.Config{DisableStartupMessage: true})
 	app.Use(limiter.New(limiter.Config{Max: 6, Expiration: time.Second * 30}))
 
-	templ := app.Group("/template")
+	gTemplate := app.Group("/template")
 
-	templ.Use(compress.New(compress.ConfigDefault))
+	gTemplate.Use(compress.New(compress.ConfigDefault))
 
-	templ.All("/:templateName",
+	gTemplate.All("/:templateName",
 		func(c *fiber.Ctx) error {
 			mth := c.Method()
 			if mth == "POST" || mth == "GET" {
@@ -36,6 +36,10 @@ func main() {
 			return c.Next()
 		},
 	)
+
+	app.Get("/healthcheck", func(c *fiber.Ctx)error {
+		return c.SendString("OK")
+	})
 
 	addr := ":" + os.Getenv("PORT")
 	log.Infof("Starting server on port %s", addr)
