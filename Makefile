@@ -1,6 +1,7 @@
 .PHONY: build
 build:
-	docker build --build-args platform=$(ARCH) -t ghcr.io/unhanded/txp:latest .
+	# docker build --platform=$(ARCH) -t ghcr.io/unhanded/txp:latest .
+	docker build -t ghcr.io/unhanded/txp:latest .
 
 .PHONY: dev
 dev:

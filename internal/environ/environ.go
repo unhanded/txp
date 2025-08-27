@@ -24,3 +24,7 @@ func TxpToken() string {
 func TxpDebug() bool {
 	return os.Getenv("TXP_DEBUG") != ""
 }
+
+func TxpIsDevMode() bool {
+	return os.Getenv("TXP_DEV_MODE") == "1"
+}

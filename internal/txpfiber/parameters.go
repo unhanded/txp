@@ -8,9 +8,14 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/unhanded/txp/internal/dataman"
+	"github.com/unhanded/txp/internal/environ"
 )
 
 func HandleParametersGet(c *fiber.Ctx) error {
+	if !environ.TxpIsDevMode() {
+		return c.SendStatus(403)
+	}
+
 	tName := c.Params("templateName", "")
 	if tName == "" {
 		return c.SendStatus(400)
