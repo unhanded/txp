@@ -27,6 +27,8 @@ func main() {
 
 	gTemplate.Use(compress.New(compress.ConfigDefault))
 
+	gTemplate.Get("/:templateName/parameters", txpfiber.HandleParametersGet)
+
 	gTemplate.All("/:templateName",
 		func(c *fiber.Ctx) error {
 			mth := c.Method()
@@ -37,7 +39,7 @@ func main() {
 		},
 	)
 
-	app.Get("/healthcheck", func(c *fiber.Ctx)error {
+	app.Get("/healthcheck", func(c *fiber.Ctx) error {
 		return c.SendString("OK")
 	})
 
