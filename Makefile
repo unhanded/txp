@@ -1,10 +1,14 @@
 .PHONY: build
 build:
-	docker build --platform linux/$(ARCH) -t ghcr.io/unhanded/txp:latest .
+	docker build --build-args platform=$(ARCH) -t ghcr.io/unhanded/txp:latest .
 
 .PHONY: dev
 dev:
 	PORT=8089 TXP_DIR=./docs/example go run ./app/txpd
+
+.PHONY: test
+test:
+	go test ./...
 
 dist/amd64:
 	GOARCH=amd64 go build -o ./dist/amd64/txpd ./app/txpd

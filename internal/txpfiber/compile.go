@@ -26,14 +26,29 @@ func compileWithDir(dirName string, format string) ([]byte, error) {
 	return result, nil
 }
 
-func SendPdf(c *fiber.Ctx, b []byte) error {
+func Send(c *fiber.Ctx, b []byte, format string) error {
 	_, writeErr := c.Write(b)
 	if writeErr != nil {
 		log.Error("failed to write response", "err", writeErr.Error())
 		return c.SendStatus(500)
 	}
-
-	c.Response().Header.SetContentType("application/pdf")
+	withFormat(c, format)
 
 	return c.SendStatus(200)
+}
+
+func withFormat(c *fiber.Ctx, format string) {
+	mime := toMimeType(format)
+	c.Response().Header.SetContentType(mime)
+}
+
+func toMimeType(format string) string {
+	switch format {
+	case "png":
+		return "image/png"
+	case "svg":
+		return "image/svg+xml"
+	default:
+		return "application/pdf"
+	}
 }

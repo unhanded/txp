@@ -49,7 +49,7 @@ func HandleCompile(c *fiber.Ctx) error {
 	}
 
 	log.Info("Sucessfully generated a document, proceeding to send", "work_id", strings.TrimPrefix(workingDir, "."))
-	if err := SendPdf(c, b); err != nil {
+	if err := Send(c, b, reqFormat); err != nil {
 		log.Error("Failed to send response", "err", err)
 	}
 	fs.UnbotheredDelete(workingDir)
