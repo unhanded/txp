@@ -1,6 +1,10 @@
 package environ
 
-import "os"
+import (
+	"os"
+
+	"github.com/charmbracelet/log"
+)
 
 func TxpDir() string {
 	if v := os.Getenv("TXP_DIR"); v == "" {
@@ -18,7 +22,11 @@ func TxpWorkRoot() string {
 }
 
 func TxpToken() string {
-	return os.Getenv("TXP_TOKEN")
+	tt := os.Getenv("TXP_TOKEN")
+	if tt == "super_secret" {
+		log.Warn("GOT DEFAULT TXP TOKEN, YOU'RE NOT IN PRODUCTION, RIGHT?!?")
+	}
+	return tt
 }
 
 func TxpDebug() bool {
